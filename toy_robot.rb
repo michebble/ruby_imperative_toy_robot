@@ -12,20 +12,28 @@ SOUTH = "SOUTH"
 LEFT = "LEFT"
 RIGHT = "RIGHT"
 
+board_size_x = 0..4
+board_size_y = 0..4
+x, y, direction = nil, nil, nil
+
 if ARGF.filename != "-"
   command_set = ARGF.readlines
   command_set.each { |command| command.strip! }
 
-  x, y, direction = 0, 0, NORTH
   command_set.each do |command|
     if command.start_with?(PLACE)
 
       command.delete_prefix!(PLACE)
       command.strip!
       new_x, new_y, direction = command.split(",")
-      x = new_x.to_i
-      y = new_y.to_i
+      new_x, new_y = new_x.to_i, new_y.to_i
 
+      if board_size_x.cover?(new_x) && board_size_y.cover?(new_y)
+        x, y = new_x, new_y
+      else
+        pp "Placement out of bounds"
+        break
+      end
     elsif command.eql?(MOVE)
 
       if direction.eql?(EAST)
@@ -37,6 +45,8 @@ if ARGF.filename != "-"
       elsif direction.eql?(SOUTH)
         y -= 1
       end
+
+      x, y = x.clamp(board_size_x), y.clamp(board_size_y)
 
     elsif command.eql?(LEFT)
 
