@@ -6,7 +6,6 @@ EAST = "EAST".freeze
 WEST = "WEST".freeze
 LEFT = "LEFT".freeze
 
-
 if ARGF.filename != "-"
   command_set = ARGF.readlines
   command_set.each { |command| command.strip! }
