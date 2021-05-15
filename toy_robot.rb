@@ -12,6 +12,9 @@ SOUTH = "SOUTH"
 LEFT = "LEFT"
 RIGHT = "RIGHT"
 
+board_size_x = 0..4
+board_size_y = 0..4
+
 if ARGF.filename != "-"
   command_set = ARGF.readlines
   command_set.each { |command| command.strip! }
@@ -38,6 +41,8 @@ if ARGF.filename != "-"
         y -= 1
       end
 
+      x = x.clamp(board_size_x)
+      y = y.clamp(board_size_y)
     elsif command.eql?(LEFT)
 
       if direction.eql?(EAST)
